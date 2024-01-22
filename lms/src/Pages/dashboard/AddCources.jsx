@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import Layout from "./Layout";
+import toast from 'react-hot-toast';
 
 const AddCources = () => {
   const [courseData, setCourseData] = useState({
+    id: null,
     course: "",
     instructor: "",
     descraption: "",
@@ -11,6 +13,12 @@ const AddCources = () => {
     duration: "",
     schedule: "",
     location: "",
+    syllabus:[],
+    enrolledStudents:[],
+  });
+  const [studentFormData, setStudentFormData] = useState({
+    studentName: "",
+    email: "",
   });
 
   const getCourseData = (e)=>{
@@ -21,17 +29,63 @@ const AddCources = () => {
       }));
       console.log(courseData);
   }
+  const handleSyllabusChange = (index, e) => {
+    const { value } = e.target;
+    setCourseData((prevData) => {
+      const updatedSyllabus = [...prevData.syllabus];
+      updatedSyllabus[index] = value;
+      return {
+        ...prevData,
+        syllabus: updatedSyllabus,
+      };
+    });
+  };
 
+  const addSyllabusInput = () => {
+    setCourseData((prevData) => ({
+      ...prevData,
+      syllabus: [...prevData.syllabus, ""],
+    }));
+    toast.success("Chapter Add Successful")
+  };
+
+
+  // handle student
+  const handleStudentDataChange = (e) => {
+    const { name, value } = e.target;
+    setStudentFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+  const enrollStudent = () => {
+    setCourseData((prevData) => ({
+      ...prevData,
+      enrolledStudents: [...prevData.enrolledStudents || [], { ...studentFormData }],
+    }));
+    toast.success("Student Enrolled Successfully");
+    setStudentFormData({
+      studentName: "",
+      email: "",
+    });
+  };
+  // Generate unique id
+  const generateUniqueId = () => {
+    // Replace this with your own logic to generate a unique ID
+    return new Date().getTime();
+  };
    const handleSubmit = async(e) =>{
     e.preventDefault();
-    const {course,instructor,descraption,thumbnail,status,duration,schedule,location,} = courseData
+    const {course,instructor,descraption,thumbnail,status,duration,schedule,location,syllabus,enrolledStudents} = courseData
         try {
+            const id = generateUniqueId();
             const res = await fetch("https://stulms-default-rtdb.firebaseio.com/studentlms.json",{
                 method: "POST",
                 headers:{
                     "Content-type": "application/json",
                 },
                 body: JSON.stringify({
+                id,
                 course,
                 instructor,
                 descraption,
@@ -39,8 +93,26 @@ const AddCources = () => {
                 status,
                 duration,
                 schedule,
-                location,})
+                location,
+                syllabus: courseData.syllabus.filter((chapter) => chapter !== ""),
+                enrolledStudents,
+              })
             });
+    toast.success("Course Submit Successful");
+    setCourseData({
+      id:null,
+      course: "",
+      instructor: "",
+      descraption: "",
+      thumbnail: "",
+      status: "",
+      duration: "",
+      schedule: "",
+      location: "",
+      syllabus:[],
+      enrolledStudents:[],
+    })
+
         } catch (error) {
          console.log(error);   
         }
@@ -150,6 +222,53 @@ const AddCources = () => {
               />
             </div>
           </div>
+          {/* <hr /> */}
+          <h3>Add Syllabus :-</h3>
+          <div className="input">
+            <div className="add-input">
+              {courseData.syllabus.map((chapter, index) => (
+                <input
+                  key={index}
+                  type="text"
+                  value={chapter}
+                  onChange={(e) => handleSyllabusChange(index, e)}
+                  placeholder={`Chapter ${index + 1}`}
+                  autoComplete="off"
+                />
+              ))}
+              <button type="button" onClick={addSyllabusInput} className="add-chapter">
+                Add Chapter
+              </button>
+            </div>
+          </div>
+          <h3>Enroll Students :-</h3>
+          <div className="input">
+            <div className="add-input">
+              <span>Student Name</span>
+              <input
+                type="text"
+                name="studentName"
+                value={studentFormData.studentName}
+                onChange={handleStudentDataChange}
+                placeholder="Enter Student Name"
+                autoComplete="off"
+              />
+            </div>
+            <div className="add-input">
+              <span>Email</span>
+              <input
+                type="text"
+                name="email"
+                value={studentFormData.email}
+                onChange={handleStudentDataChange}
+                placeholder="Enter Email"
+                autoComplete="off"
+              />
+            </div>
+          </div>
+          <button type="button" onClick={enrollStudent} className="add-chapter">
+            Enroll Student
+          </button>
           <button type="submit">Add Course</button>
         </form>
       </div>

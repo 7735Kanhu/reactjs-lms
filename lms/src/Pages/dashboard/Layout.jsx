@@ -1,11 +1,12 @@
 import React from 'react'
 import Dashboard from './Dashboard'
+import { Toaster } from 'react-hot-toast';
 
 const Layout = ({children}) => {
   return (
     <div className='dashboard-page'>
     <Dashboard />
-    <div>{children}</div>
+    <div><Toaster />{children}</div>
 
     </div>
   )

@@ -7,6 +7,8 @@ import Footer from './components/Footer'
 import Dashboard from './Pages/dashboard/Dashboard'
 import HomeDash from './Pages/dashboard/HomeDash'
 import AddCources from './Pages/dashboard/AddCources'
+import Courses from './Pages/Courses'
+import CourseDetail from './Pages/CourseDetail'
 
 function App() {
 
@@ -18,6 +20,8 @@ function App() {
       <Route path='/dashboard' element={<Dashboard />} />
       <Route path='/add-courses' element={<AddCources />} />
       <Route path='/Studashbord' element={<HomeDash />} />
+      <Route path='/courses' element={<Courses />} />
+      <Route path="/courses/:courseId" element={<CourseDetail />} />
     </Routes>
     <Footer />
     </>
