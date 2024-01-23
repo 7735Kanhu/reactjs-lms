@@ -494,6 +494,10 @@
   padding: 13px 0px 13px 0px;
   font-size: 1.4rem;
 }
+.dashboard-wrapper img {
+  width: 7vw;
+  margin: 1.5rem auto;
+}
 .dashboard-wrapper ul {
   width: 100%;
   display: flex;
@@ -531,6 +535,71 @@
   align-items: flex-start;
   gap: 20px;
   padding: 50px;
+}
+.dashboard-container .dash-card-container {
+  display: flex;
+  gap: 30px;
+}
+.dashboard-container .dash-card-container .dash-card {
+  background: rgb(53, 53, 250);
+  padding: 30px;
+  color: #fff;
+  height: 25vh;
+  border-radius: 4px;
+}
+.dashboard-container .dash-card-container .dash-card h4 {
+  font-size: 1.5rem;
+  margin-bottom: 30px;
+}
+.dashboard-container .dash-card-container .dash-card span {
+  font-size: 2.5rem;
+  font-weight: 900;
+  margin: auto;
+}
+.dashboard-container .dash-card-container .dash-card:nth-child(2) {
+  background: rgb(240, 155, 240);
+}
+.dashboard-container h3 {
+  font-size: 1.5rem;
+}
+.dashboard-container .stu-course-card {
+  display: flex;
+  gap: 20px;
+}
+.dashboard-container .stu-course-card img {
+  width: 30vw;
+  border-radius: 5px;
+}
+.dashboard-container .stu-course-card .stu-course-details {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.dashboard-container .stu-course-card .stu-course-details h2 {
+  text-transform: uppercase;
+}
+.dashboard-container .stu-course-card .stu-course-details h3 {
+  font-size: 20px;
+}
+.dashboard-container .stu-course-card .stu-course-details p {
+  font-size: 15px;
+}
+.dashboard-container .stu-course-card .stu-course-details p span {
+  font-size: 20px;
+  color: aqua;
+}
+.dashboard-container .stu-course-card button {
+  width: max-content;
+  padding: 12px 15px;
+  cursor: pointer;
+  border: none;
+  font-size: 20px;
+  transition: all 300ms ease-in-out;
+  border-radius: 3px;
+}
+.dashboard-container .stu-course-card button:hover {
+  background: #141313;
+  color: #fff;
 }
 
 .add-wrapper {
@@ -682,6 +751,44 @@
 .right-bar .card-body .card-content button:hover {
   background: #141313;
   color: #fff;
+}
+
+.course-details-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: auto;
+  padding: 4rem 0;
+  max-width: 1280px;
+}
+.course-details-wrapper .course-details-card {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+.course-details-wrapper .course-details-card img {
+  flex-basis: 30%;
+  width: 40vw;
+  height: 50vh;
+}
+.course-details-wrapper .course-details-card .course-details {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.course-details-wrapper .course-details-card .course-details h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+.course-details-wrapper .course-details-card .course-details .details-first {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 20px;
+  color: #918f8f;
+}
+.course-details-wrapper .course-details-card .course-details p {
+  font-size: 20px;
+  color: #918f8f;
 }
 
 /*# sourceMappingURL=index.css.map */

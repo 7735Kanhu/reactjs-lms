@@ -1,88 +1,49 @@
-// import React, { useEffect, useState } from 'react';
-// import { useParams } from 'react-router-dom';
-// import { getFirestore, doc, getDoc } from 'firebase/firestore';
-
-
-// const CourseDetail = () => {
-//     const { courseId } = useParams();
-//     const [courseDetails, setCourseDetails] = useState(null);
-
-//   const fetchCourseDetails = async () => {
-//     try {
-//         const db = getFirestore();
-//       const docRef = doc(db, 'studentlms', courseId);
-//       const docSnap = await getDoc(docRef);
-
-//       if (docSnap.exists()) {
-//         const data = docSnap.data();
-//         setCourseDetails(data);
-//         console.log(data);
-//       } else {
-//         console.log('No such document!');
-//       }
-//     } catch (error) {
-//       console.error('Error fetching course details:', error);
-//     }
-//   };
-
-//   useEffect(() => {
-//     fetchCourseDetails();
-//   }, [courseId]);
-import React, { useEffect, useState } from 'react';
-import firebase from 'firebase/app';
-import 'firebase/database';
 import { useParams } from 'react-router-dom';
+import { CourseModel } from '../config/data';
+
 
 const CourseDetail = () => {
   const { courseId } = useParams();
-  const [courseDetails, setCourseDetails] = useState(null);
+  const course = CourseModel.find((c) => c.id === parseInt(courseId, 10));
 
-  useEffect(() => {
-    // Initialize Firebase with your configuration
-    const firebaseConfig = {
-      apiKey: 'your-api-key',
-      authDomain: 'your-auth-domain',
-      databaseURL: 'https://your-firebase-project-id.firebaseio.com',
-      projectId: 'your-firebase-project-id',
-      storageBucket: 'your-storage-bucket',
-      messagingSenderId: 'your-messaging-sender-id',
-      appId: 'your-app-id',
-    };
+  if (!course) {
+    return <h3>Course not found</h3>;
+  }
 
-    if (!firebase.apps.length) {
-      firebase.initializeApp(firebaseConfig);
-    }
-
-    // Get a reference to the Firebase Realtime Database
-    const database = firebase.database();
-    
-    // Replace 'studentlms' with the actual path to your data in the database
-    const courseRef = database.ref(`studentlms/${courseId}`);
-
-    courseRef.once('value')
-      .then(snapshot => {
-        const data = snapshot.val();
-        setCourseDetails(data);
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error);
-      });
-  }, [courseId]);
   return (
-    <div className="course-details">
-      {courseDetails ? (
-        <>
-          <h2>{courseDetails.course}</h2>
-          <p>Instructor: {courseDetails.instructor}</p>
-          <p>Duration: {courseDetails.duration}</p>
-          <p>Schedule: {courseDetails.schedule}</p>
-          {/* Add more details as needed */}
-        </>
-      ) : (
-        <p>Loading...</p>
-      )}
+    <div className="course-details-wrapper">
+      <div className="course-details-card">
+        <img src={course.thumbnail} alt="couorse" />
+        <div className="course-details">
+          <h3>Course Highlights</h3>
+          <div className="details-first">
+            <span>There are {course.syllabus.length} Topics</span>
+            <span>Total number of students are {course.students.length} Enrolled</span> 
+            <span>Status of this Course - {course.enrollmentStatus}</span>
+          </div>
+          <hr />
+          <h2>{course.name}</h2>
+          <p>Instructor Name - {course.instructor}</p>
+          <p>Description - {course.description}</p>
+          <p>Course duration - {course.duration}</p>
+          <p>course Time - {course.schedule}</p>
+          <p>This course will be - {course.location}</p>
+          <hr />
+          <h3>Before You learn this course You need have some prerequisites :</h3>
+          <p>{course.prerequisites.map(i=> i)}</p>
+          <hr />
+          <h3>Syllabus of the Course are :</h3>
+          {course.syllabus.map((i)=>(
+            <>
+            <h5 key={i}>Week -{i.week}</h5>
+            <div><span>Topic</span> : <p>{i.topic}</p></div>
+            <div><span>Content</span> : <p>{i.content}</p></div>
+            </>
+          ))}
+        </div>
+      </div>
     </div>
-  )
+  );
 }
 
 export default CourseDetail

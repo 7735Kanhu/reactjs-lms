@@ -1,42 +1,23 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate  } from 'react-router-dom';
+import { CourseModel } from '../config/data';
 
 const Courses = () => {
-    const [courses,setCourses] = useState([])
+    // const [courses,setCourses] = useState([])
     const [filteredCourses, setFilteredCourses] = useState([]);
     const [courseName, setCourseName] = useState('');
     const [instructor, setInstructor] = useState('');
     const [location, setLocation] = useState('');
     const navigate = useNavigate();
-    // const navigate = Navigate()
-
-
-    const fetchCourse = async ()=>{
-        try {
-            const resp = await fetch("https://stulms-default-rtdb.firebaseio.com/studentlms.json");
-            const data = await resp.json();
-            // console.log(data);
-            if(data){
-                const coursesArray = Object.values(data);
-                setCourses(coursesArray);
-                setFilteredCourses(coursesArray)
-            }
-            // console.log(courses);
-        } catch (error) {
-            console.log(error);
-        }
-    }
-    useEffect(()=>{
-            fetchCourse()
-        },[])
+    
         useEffect(() => {
-            const filtered = courses.filter((course) =>
-              course.course.toLowerCase().includes(courseName.toLowerCase()) &&
+            const filtered = CourseModel.filter((course) =>
+              course.name.toLowerCase().includes(courseName.toLowerCase()) &&
               course.instructor.toLowerCase().includes(instructor.toLowerCase()) &&
               course.location.toLowerCase().includes(location.toLowerCase())
             );
             setFilteredCourses(filtered);
-          }, [courseName, instructor, location, courses]);
+          }, [courseName, instructor, location]);
 
         //   add to details page
           const handleKnowMoreClick = (courseId) => {
@@ -58,12 +39,12 @@ const Courses = () => {
                 </div>
                 <div className="filter-input">
                     <label>By Location</label>
-                    <input type="text" placeholder="e.g('Open', 'close')" value={location} onChange={e => {setLocation(e.target.value)}}/>
+                    <input type="text" placeholder="e.g('Online', 'Offline')" value={location} onChange={e => {setLocation(e.target.value)}}/>
                 </div>
             </div>
             <div className="right-bar">
                 {
-                    courses && courses.length ?  <>
+                    CourseModel && CourseModel.length ?  <>
                     {
                        
                         filteredCourses.map((course)=>(
@@ -71,13 +52,12 @@ const Courses = () => {
                                 <img src={course.thumbnail} alt="course" />
                                 <div className="card-content">
                                 <p>By <span>{course.instructor}</span></p>
-                                <h2>{course.course}</h2>
+                                <h2>{course.name}</h2>
                                 <hr />
                                 <div className="status">
                                     <span>{course.duration}</span>
                                     <span>{course.location}</span>
                                 </div>
-                                {/* <Link to="/" className=''>Know more</Link> */}
                                 <button onClick={() => handleKnowMoreClick(course.id)}>Know more</button>
                                 </div>
                             </div>
